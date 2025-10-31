@@ -30,7 +30,9 @@
 > PRD v1.1 기준 작업 목록
 > 기준 일자: 2025년 10월 31일
 
-## 📋 데이터베이스 및 백엔드
+## Phase 1: 기본 인프라 및 데이터베이스 설정
+
+### 📋 데이터베이스 및 백엔드
 
 - [x] Supabase 스키마 구성
   - [x] `products` 테이블 생성 (상품 정보)
@@ -47,7 +49,39 @@
   - [ ] 이벤트 로그 기록 API (`purchase_completed` 이벤트)
   - [ ] 재고 차감 로직 (주문 완료 시)
 
-## 🎨 메인 페이지 (MAIN-01, MAIN-02)
+### 🔐 사용자 인증 (AUTH-01)
+
+- [x] Clerk 기본 설정 (middleware.ts, layout.tsx)
+- [x] Clerk-Supabase 사용자 동기화 (`app/api/sync-user`, `components/providers/sync-user-provider.tsx`)
+- [x] 사용자 동기화 훅 (`hooks/use-sync-user.ts`)
+- [x] 인증 상태에 따른 UI 처리
+  - [x] 로그인/로그아웃 버튼 표시 (Navbar.tsx)
+  - [x] 사용자 정보 표시 (UserButton)
+  - [x] 한국어 로컬라이제이션 (layout.tsx에 koKR 적용)
+- [ ] 로그인/회원가입 페이지 스타일링 (선택사항)
+  - [ ] Clerk 컴포넌트 커스터마이징 (Durian Store 브랜드 색상 적용)
+
+### 🔧 인프라 및 배포 (Phase 1 범위)
+
+- [x] 기본 인프라 설정 (Phase 1 완료)
+  - [x] Supabase 클라이언트 설정 (lib/supabase/)
+    - [x] `clerk-client.ts` (Client Component용)
+    - [x] `server.ts` (Server Component/Server Action용)
+    - [x] `service-role.ts` (관리자 권한용)
+    - [x] `client.ts` (공개 데이터용)
+  - [x] TypeScript 설정 (tsconfig.json)
+  - [x] Next.js 설정 (next.config.ts)
+  - [x] Tailwind CSS 설정 (app/globals.css)
+  - [x] shadcn/ui 컴포넌트 설치 (button, form, input, label, dialog, accordion, textarea)
+- [ ] 환경 변수 설정
+  - [ ] Toss Payments 클라이언트 키
+  - [ ] Toss Payments 시크릿 키 (서버 사이드)
+  - [x] Supabase 환경 변수 (코드에 설정됨, .env 파일 확인 필요)
+  - [x] Clerk 환경 변수 (코드에 설정됨, .env 파일 확인 필요)
+
+## Phase 2: 메인 기능 개발
+
+### 🎨 메인 페이지 (MAIN-01, MAIN-02)
 
 - [x] 메인 페이지 레이아웃 구성
   - [x] 헤더/네비게이션 바 (`components/Navbar.tsx` 존재)
@@ -62,7 +96,7 @@
   - [ ] 원산지 특징 설명 섹션
 - [ ] 반응형 디자인 적용 (모바일 우선)
 
-## 📦 상품 상세 페이지 (PDP-01, PDP-02)
+### 📦 상품 상세 페이지 (PDP-01, PDP-02)
 
 - [ ] 상품 상세 페이지 라우트 생성 (`app/products/[id]/page.tsx`)
 - [ ] 상품 정보 표시 (PDP-01)
@@ -76,19 +110,24 @@
     - [ ] 로그인 상태: 결제 페이지로 이동
     - [ ] 비로그인 상태: Clerk 로그인 페이지로 이동
 
-## 🔐 사용자 인증 (AUTH-01)
+### 🎨 디자인 시스템 및 스타일링
 
-- [x] Clerk 기본 설정 (middleware.ts, layout.tsx)
-- [x] Clerk-Supabase 사용자 동기화 (`app/api/sync-user`, `components/providers/sync-user-provider.tsx`)
-- [x] 사용자 동기화 훅 (`hooks/use-sync-user.ts`)
-- [x] 인증 상태에 따른 UI 처리
-  - [x] 로그인/로그아웃 버튼 표시 (Navbar.tsx)
-  - [x] 사용자 정보 표시 (UserButton)
-  - [x] 한국어 로컬라이제이션 (layout.tsx에 koKR 적용)
-- [ ] 로그인/회원가입 페이지 스타일링 (선택사항)
-  - [ ] Clerk 컴포넌트 커스터마이징 (Durian Store 브랜드 색상 적용)
+- [ ] 브랜드 컬러 적용
+  - [ ] Primary: `#064E3B` (짙은 녹색)
+  - [ ] Accent: `#FACC15` (노란색)
+  - [ ] Tailwind CSS 커스텀 컬러 설정 (`app/globals.css`)
+- [ ] 공통 컴포넌트
+  - [ ] 버튼 컴포넌트 스타일링 (shadcn/ui 기반)
+  - [ ] 카드 컴포넌트 스타일링
+  - [ ] 폼 컴포넌트 스타일링
+- [ ] 반응형 디자인
+  - [ ] 모바일 해상도 최적화
+  - [ ] 태블릿 해상도 대응
+  - [ ] 데스크톱 해상도 대응
 
-## 💳 결제 플로우 (PAY-01)
+## Phase 3: 결제 및 비즈니스 로직
+
+### 💳 결제 플로우 (PAY-01)
 
 - [ ] Toss Payments SDK 설치 및 설정
   - [ ] `@tosspayments/payment-sdk` 또는 `@tosspayments/sdk` 설치
@@ -118,7 +157,7 @@
   - [ ] 주문 번호 표시
   - [ ] 메인 페이지로 돌아가기 버튼
 
-## 📊 이벤트 로그 및 통계 (LOG-01)
+### 📊 이벤트 로그 및 통계 (LOG-01)
 
 - [ ] 이벤트 로그 기록 기능
   - [ ] `purchase_completed` 이벤트 기록 (결제 완료 시)
@@ -127,33 +166,10 @@
   - [ ] `event_logs` 테이블 데이터 조회 가능 여부 확인
   - [ ] Supabase 대시보드에서 수동 계산 가능 여부 확인
 
-## 🎨 디자인 시스템 및 스타일링
+## Phase 4: 테스트 및 배포
 
-- [ ] 브랜드 컬러 적용
-  - [ ] Primary: `#064E3B` (짙은 녹색)
-  - [ ] Accent: `#FACC15` (노란색)
-  - [ ] Tailwind CSS 커스텀 컬러 설정 (`app/globals.css`)
-- [ ] 공통 컴포넌트
-  - [ ] 버튼 컴포넌트 스타일링 (shadcn/ui 기반)
-  - [ ] 카드 컴포넌트 스타일링
-  - [ ] 폼 컴포넌트 스타일링
-- [ ] 반응형 디자인
-  - [ ] 모바일 해상도 최적화
-  - [ ] 태블릿 해상도 대응
-  - [ ] 데스크톱 해상도 대응
+### 🔧 인프라 및 배포 (Phase 4 범위)
 
-## 🔧 인프라 및 배포
-
-- [x] 기본 인프라 설정 (Phase 1 완료)
-  - [x] Supabase 클라이언트 설정 (lib/supabase/)
-    - [x] `clerk-client.ts` (Client Component용)
-    - [x] `server.ts` (Server Component/Server Action용)
-    - [x] `service-role.ts` (관리자 권한용)
-    - [x] `client.ts` (공개 데이터용)
-  - [x] TypeScript 설정 (tsconfig.json)
-  - [x] Next.js 설정 (next.config.ts)
-  - [x] Tailwind CSS 설정 (app/globals.css)
-  - [x] shadcn/ui 컴포넌트 설치 (button, form, input, label, dialog, accordion, textarea)
 - [ ] 환경 변수 설정
   - [ ] Toss Payments 클라이언트 키
   - [ ] Toss Payments 시크릿 키 (서버 사이드)
@@ -164,7 +180,7 @@
   - [ ] 환경 변수 설정
   - [ ] 배포 후 동작 확인
 
-## ✅ 테스트 (비포 릴리즈 체크리스트)
+### ✅ 테스트 (비포 릴리즈 체크리스트)
 
 - [ ] 결제 테스트
   - [ ] Toss Payments 샌드박스 환경에서 가상 결제 테스트
@@ -183,7 +199,9 @@
   - [ ] 웹사이트에 변경사항 즉시 반영 확인
   - [ ] 베스트 상품 노출 확인
 
-## 📝 문서화
+## Phase 5: 문서화 및 정리
+
+### 📝 문서화
 
 - [ ] README.md 업데이트
   - [ ] 프로젝트 개요
@@ -193,7 +211,7 @@
   - [ ] Server Actions 또는 API Routes 명세
   - [ ] 데이터베이스 스키마 설명
 
-## 🗑️ 정리 작업
+### 🗑️ 정리 작업
 
 - [ ] 테스트 페이지 제거 (선택사항)
   - [ ] `app/auth-test/` 제거 또는 리팩토링
